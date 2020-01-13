@@ -44,7 +44,9 @@ object Actions {
   }
 
   def findSoup(origin: MapLocation, senseRadius: Int): Option[MapLocation] = {
-    val soups = generateSenseTiles(origin, senseRadius).filter(rc.senseSoup(_) > 0)
+    val soups = generateSenseTiles(origin, senseRadius)
+      .filter(rc.senseSoup(_) > 0)
+      .sortWith(origin.distanceSquaredTo(_) < origin.distanceSquaredTo(_))
     soups.headOption
   }
 
