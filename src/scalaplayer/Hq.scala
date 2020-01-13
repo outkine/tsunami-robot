@@ -3,7 +3,9 @@ package scalaplayer
 import battlecode.common._
 
 object Hq {
-  def run(rc: RobotController): Unit = {
-    Actions.tryBuild(RobotType.MINER, Direction.NORTH)
+  var hasBuilt = false
+
+  def run(rc: RobotController, turnCount: Int): Unit = {
+    if (!hasBuilt && Actions.tryBuild(RobotType.MINER, Direction.NORTH)) Hq.hasBuilt = true
   }
 }

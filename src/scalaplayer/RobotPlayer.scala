@@ -5,6 +5,7 @@ import battlecode.common._
 object RobotPlayer {
   def run(rc: RobotController): Unit = {
     print(rc.getType + " created")
+
     // DO NOT FORGET THIS
     Actions.init(rc)
 
@@ -15,8 +16,8 @@ object RobotPlayer {
       try {
         import battlecode.common.RobotType._
         rc.getType match {
-          case HQ => Hq.run(rc)
-          case MINER => Miner.run(rc)
+          case HQ => Hq.run(rc, turnCount)
+          case MINER => Miner.run(rc, turnCount)
 //          case REFINERY => runRefinery()
 //          case VAPORATOR => runVaporator()
 //          case DESIGN_SCHOOL => runDesignSchool()
