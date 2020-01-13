@@ -23,9 +23,10 @@ object Miner {
         case None => Wandering()
       }
     case Moving(path) =>
-       path match {
-        case dir :: (dir2 :: rest)  =>
-          if (Actions.tryMove(dir)) Moving(dir2 :: rest)
+      // Mining requires a direction, so we switch to mining right before arriving at the target soup
+      path match {
+        case dir :: rest if rest.nonEmpty =>
+          if (Actions.tryMove(dir)) Moving(rest)
           else Moving(path)
         case dir :: _ =>
           Mining(dir)
