@@ -2,58 +2,24 @@ package scalaplayer
 
 import battlecode.common._
 
-// @formatter:off
-sealed trait Stage
-final case class MiningStage() extends Stage
-final case class RefiningStage() extends Stage
-
-sealed trait State
-final case class Init() extends State
-final case class Moving(stage: Stage, prevOrigin: MapLocation, target: MapLocation) extends State
-final case class Working(stage: Stage, dir: Direction) extends State
-final case class Wandering() extends State
-// @formatter:on
-
 object Miner {
+  // @formatter:off
+  sealed trait State
+  final case class Init() extends State
+  final case class SoupMiner(state: miner.SoupMiner.State) extends State
+  final case class Builder(state: miner.Builder.State) extends State
+  // @formatter:on
+
   var state: State = Init()
   var hqLoc: MapLocation = _
 
-  private def prepareMining(rc: RobotController): State = {
-    Actions.findSoup() match {
-      case Some(soup) => Moving(MiningStage(), rc.getLocation, soup)
-      case None => Wandering()
-    }
-  }
-
-  def run(rc: RobotController, turnCount: Int): Unit = Miner.state = Miner.state match {
+  def run(rc: RobotController): Unit = Miner.state = Miner.state match {
     case Init() =>
       Miner.hqLoc = rc.senseNearbyRobots(1, rc.getTeam).find(_.getType == RobotType.HQ).head.getLocation
-      prepareMining(rc)
+      if (hqLoc.directionTo(rc.getLocation) == Direction.SOUTH) Builder(miner.Builder.Init())
+      else SoupMiner(miner.SoupMiner.Init())
 
-    case Moving(stage, prevOrigin, target) =>
-      val dir = Actions.findPath(prevOrigin, rc.getLocation, target)
-      if (rc.getLocation.add(dir) == target) {
-        Working(stage, dir)
-      } else {
-        Actions.tryMove(dir)
-        Moving(stage, rc.getLocation, target)
-      }
-
-    case Working(stage, dir) => stage match {
-      case MiningStage() =>
-        if (rc.getSoupCarrying < RobotType.MINER.soupLimit) {
-          if (rc.senseSoup(rc.getLocation.add(dir)) > 0) {
-            Actions.tryMine(dir)
-            Working(MiningStage(), dir)
-          } else prepareMining(rc)
-        } else Moving(RefiningStage(), rc.getLocation, Miner.hqLoc)
-      case RefiningStage() =>
-        if (rc.getSoupCarrying > 0) {
-          Actions.tryRefine(dir)
-          Working(RefiningStage(), dir)
-        } else prepareMining(rc)
-    }
-
-    case Wandering() => Wandering()
+    case Builder(state) => Builder(miner.Builder.run(rc, state))
+    case SoupMiner(state) => SoupMiner(miner.SoupMiner.run(rc, state, Miner.hqLoc))
   }
 }

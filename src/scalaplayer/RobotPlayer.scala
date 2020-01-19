@@ -11,21 +11,20 @@ object RobotPlayer {
 
     var turnCount = 0
     while (true) {
-      turnCount += 1
-
       try {
         import battlecode.common.RobotType._
         rc.getType match {
           case HQ => Hq.run(rc, turnCount)
-          case MINER => Miner.run(rc, turnCount)
+          case MINER => Miner.run(rc)
 //          case REFINERY => runRefinery()
 //          case VAPORATOR => runVaporator()
-//          case DESIGN_SCHOOL => runDesignSchool()
-//          case FULFILLMENT_CENTER => runFulfillmentCenter()
-//          case LANDSCAPER => runLandscaper()
-//          case DELIVERY_DRONE => runDeliveryDrone()
+          case DESIGN_SCHOOL => Factory.run(rc, Factory.DS())
+          case FULFILLMENT_CENTER => Factory.run(rc, Factory.FC())
+          case LANDSCAPER => Landscaper.run(rc)
+          case DELIVERY_DRONE => Landscaper.run(rc)
 //          case NET_GUN => runNetGun()
         }
+        turnCount += 1
         Clock.`yield`()
       } catch {
         case e: Exception =>
