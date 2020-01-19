@@ -1,11 +1,16 @@
 package scalaplayer
 
 import battlecode.common._
+import battlecode.common.RobotType._
 
 object Hq {
-  var hasBuilt = false
-
-  def run(rc: RobotController, turnCount: Int): Unit = {
-    if (!hasBuilt && Actions.tryBuild(RobotType.MINER, Direction.NORTH)) Hq.hasBuilt = true
+  var buildOrder = List(MINER, MINER)
+  def run(rc: RobotController, turnCount: Int): Unit = Hq.buildOrder = Hq.buildOrder match {
+    case robot :: rest =>
+      if (Actions.tryBuild(robot, Direction.NORTH)) {
+        rest
+      } else robot :: rest
+    case empty =>
+      empty
   }
 }
