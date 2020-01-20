@@ -3,11 +3,11 @@ package scalaplayer
 import battlecode.common._
 
 object RobotPlayer {
-  def run(rc: RobotController): Unit = {
-    print(rc.getType + " created")
+  var rc: RobotController = _
 
+  def run(rc: RobotController): Unit = {
     // DO NOT FORGET THIS
-    Actions.init(rc)
+    RobotPlayer.rc = rc
 
     var turnCount = 0
     while (true) {
@@ -21,7 +21,7 @@ object RobotPlayer {
           case DESIGN_SCHOOL => Factory.run(rc, Factory.DS())
           case FULFILLMENT_CENTER => Factory.run(rc, Factory.FC())
           case LANDSCAPER => Landscaper.run(rc)
-          case DELIVERY_DRONE => Landscaper.run(rc)
+          case DELIVERY_DRONE => Drone.run(rc)
 //          case NET_GUN => runNetGun()
         }
         turnCount += 1

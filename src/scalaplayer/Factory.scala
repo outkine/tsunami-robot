@@ -16,6 +16,6 @@ object Factory {
       case DS() => RobotType.LANDSCAPER
       case FC() => RobotType.DELIVERY_DRONE
     }
-    if (Actions.tryBuild(robot, Direction.SOUTH) && !hasBuilt) hasBuilt = true
+    if (!Factory.hasBuilt && Actions.tryBuild(robot, Direction.SOUTH)) Factory.hasBuilt = true
   }
 }
