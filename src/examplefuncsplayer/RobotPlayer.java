@@ -23,14 +23,12 @@ public strictfp class RobotPlayer {
 
         turnCount = 0;
 
-        System.out.println("I'm a " + rc.getType() + " and I just got created!");
         while (true) {
             turnCount += 1;
             // Try/catch blocks stop unhandled exceptions, which cause your robot to explode
             try {
                 // Here, we've separated the controls into a different method for each RobotType.
                 // You can add the missing ones or rewrite this into your own control structure.
-                System.out.println("I'm a " + rc.getType() + "! Location " + rc.getLocation());
                 switch (rc.getType()) {
                     case HQ:                 runHQ();                break;
                     case MINER:              runMiner();             break;
@@ -61,8 +59,7 @@ public strictfp class RobotPlayer {
     static void runMiner() throws GameActionException {
         tryBlockchain();
         tryMove(randomDirection());
-        if (tryMove(randomDirection()))
-            System.out.println("I moved!");
+        tryMove(randomDirection());
         // tryBuild(randomSpawnedByMiner(), randomDirection());
         for (Direction dir : directions)
             tryBuild(RobotType.FULFILLMENT_CENTER, dir);
