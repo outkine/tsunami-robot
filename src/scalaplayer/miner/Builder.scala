@@ -2,6 +2,7 @@ package scalaplayer.miner
 
 import battlecode.common._
 import scalaplayer.Actions
+import scalaplayer.RobotPlayer.rc
 
 object Builder {
   // @formatter:off
@@ -12,7 +13,7 @@ object Builder {
   final case class Done() extends State
   // @formatter:on
 
-  def run(rc: RobotController, state: State): State = state match {
+  def run(state: State): State = state match {
     case Init() => BuildingDS()
     case BuildingDS() =>
       if (Actions.tryBuild(RobotType.DESIGN_SCHOOL, Direction.SOUTH)) BuildingFC()

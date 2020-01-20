@@ -1,6 +1,7 @@
 package scalaplayer
 
 import battlecode.common._
+import RobotPlayer.rc
 
 object Miner {
   // @formatter:off
@@ -13,13 +14,13 @@ object Miner {
   var state: State = Init()
   var hqLoc: MapLocation = _
 
-  def run(rc: RobotController): Unit = Miner.state = Miner.state match {
+  def run(): Unit = Miner.state = Miner.state match {
     case Init() =>
       Miner.hqLoc = rc.senseNearbyRobots(1, rc.getTeam).find(_.getType == RobotType.HQ).head.getLocation
       if (hqLoc.directionTo(rc.getLocation) == Direction.SOUTH) Builder(miner.Builder.Init())
       else SoupMiner(miner.SoupMiner.Init())
 
-    case Builder(state) => Builder(miner.Builder.run(rc, state))
-    case SoupMiner(state) => SoupMiner(miner.SoupMiner.run(rc, state, Miner.hqLoc))
+    case Builder(state) => Builder(miner.Builder.run(state))
+    case SoupMiner(state) => SoupMiner(miner.SoupMiner.run(state, Miner.hqLoc))
   }
 }

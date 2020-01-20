@@ -14,14 +14,14 @@ object RobotPlayer {
       try {
         import battlecode.common.RobotType._
         rc.getType match {
-          case HQ => Hq.run(rc, turnCount)
-          case MINER => Miner.run(rc)
+          case HQ => Hq.run(turnCount)
+          case MINER => Miner.run()
 //          case REFINERY => runRefinery()
 //          case VAPORATOR => runVaporator()
-          case DESIGN_SCHOOL => Factory.run(rc, Factory.DS())
-          case FULFILLMENT_CENTER => Factory.run(rc, Factory.FC())
-          case LANDSCAPER => Landscaper.run(rc)
-          case DELIVERY_DRONE => Drone.run(rc)
+          case DESIGN_SCHOOL => Factory.run(Factory.DS())
+          case FULFILLMENT_CENTER => Factory.run(Factory.FC())
+          case LANDSCAPER => Landscaper.run()
+          case DELIVERY_DRONE => Drone.run()
 //          case NET_GUN => runNetGun()
         }
         turnCount += 1

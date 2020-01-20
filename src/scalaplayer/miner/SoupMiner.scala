@@ -2,6 +2,7 @@ package scalaplayer.miner
 
 import battlecode.common._
 import scalaplayer.{Actions, PathFinding}
+import scalaplayer.RobotPlayer.rc
 
 object SoupMiner {
   // @formatter:off
@@ -16,7 +17,7 @@ object SoupMiner {
   final case class Wandering() extends State
   // @formatter:on
 
-  private def prepareMining(rc: RobotController): State = {
+  private def prepareMining(): State = {
     Actions.findSoup() match {
       case Some(soup) => Moving(MiningStage(), rc.getLocation, soup, PathFinding.emptyState)
       case None => Wandering()
@@ -24,8 +25,8 @@ object SoupMiner {
   }
 
   //noinspection DuplicatedCode
-  def run(rc: RobotController, state: State, hqLoc: MapLocation): State = state match {
-    case Init() => prepareMining(rc)
+  def run(state: State, hqLoc: MapLocation): State = state match {
+    case Init() => prepareMining()
 
     case Moving(stage, prevOrigin, target, pathState) =>
       val origin = rc.getLocation
@@ -43,13 +44,13 @@ object SoupMiner {
           if (rc.senseSoup(rc.getLocation.add(dir)) > 0) {
             Actions.tryMine(dir)
             Working(MiningStage(), dir)
-          } else prepareMining(rc)
+          } else prepareMining()
         } else Moving(RefiningStage(), rc.getLocation, hqLoc, PathFinding.emptyState)
       case RefiningStage() =>
         if (rc.getSoupCarrying > 0) {
           Actions.tryRefine(dir)
           Working(RefiningStage(), dir)
-        } else prepareMining(rc)
+        } else prepareMining()
     }
 
     case Wandering() => Wandering()

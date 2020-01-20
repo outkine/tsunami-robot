@@ -1,6 +1,7 @@
 package scalaplayer
 
 import battlecode.common._
+import RobotPlayer.rc
 
 object Drone {
   // @formatter:off
@@ -12,7 +13,7 @@ object Drone {
   var state: State = Init()
 
   //noinspection DuplicatedCode
-  def run(rc: RobotController): Unit = Drone.state = Drone.state match {
+  def run(): Unit = Drone.state = Drone.state match {
     case Init() =>
       val landscaperId = rc.senseRobotAtLocation(rc.getLocation.add(Direction.EAST)).ID
       if (Actions.tryPickup(landscaperId))

@@ -10,7 +10,7 @@ object Landscaper {
 
   var state: State = Init()
 
-  def run(rc: RobotController): Unit = Landscaper.state = Landscaper.state match {
+  def run(): Unit = Landscaper.state = Landscaper.state match {
     case Init() => Init()
   }
 }

@@ -11,7 +11,7 @@ object Factory {
 
   var hasBuilt: Boolean = false
 
-  def run(rc: RobotController, `type`: Type): Unit = {
+  def run(`type`: Type): Unit = {
     val robot = `type` match {
       case DS() => RobotType.LANDSCAPER
       case FC() => RobotType.DELIVERY_DRONE
