@@ -44,6 +44,11 @@ object Actions {
     true
   } else false
 
+  def tryShoot(id: Int): Boolean = if (rc.isReady && rc.canShootUnit(id)) {
+    rc.shootUnit(id)
+    true
+  } else false
+
   def tryBlockchain(message: Array[Int], cost: Int): Boolean = if (rc.canSubmitTransaction(message, cost)) {
     rc.submitTransaction(message, 10)
     true

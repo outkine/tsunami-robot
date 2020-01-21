@@ -22,7 +22,7 @@ object RobotPlayer {
           case FULFILLMENT_CENTER => Factory.run(Factory.FC())
           case LANDSCAPER => Landscaper.run()
           case DELIVERY_DRONE => Drone.run()
-//          case NET_GUN => runNetGun()
+          case NET_GUN => NetGun.run()
         }
         turnCount += 1
         Clock.`yield`()
