@@ -34,6 +34,16 @@ object Actions {
     true
   } else false
 
+  def tryDig(dir: Direction): Boolean = if (rc.isReady && rc.canDigDirt(dir)) {
+    rc.digDirt(dir)
+    true
+  } else false
+
+  def tryDepositDirt(dir: Direction): Boolean = if (rc.isReady && rc.canDepositDirt(dir)) {
+    rc.depositDirt(dir)
+    true
+  } else false
+
   def tryBlockchain(message: Array[Int], cost: Int): Boolean = if (rc.canSubmitTransaction(message, cost)) {
     rc.submitTransaction(message, 10)
     true
