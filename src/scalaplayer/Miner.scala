@@ -20,7 +20,10 @@ object Miner {
       if (hqLoc.directionTo(rc.getLocation) == Direction.SOUTH) Builder(miner.Builder.Init())
       else SoupMiner(miner.SoupMiner.Init())
 
-    case Builder(state) => Builder(miner.Builder.run(state))
+    case Builder(state) => state match {
+      case miner.Builder.Done() => SoupMiner(miner.SoupMiner.Init())
+      case _ => Builder(miner.Builder.run(state))
+    }
     case SoupMiner(state) => SoupMiner(miner.SoupMiner.run(state, Miner.hqLoc))
   }
 }

@@ -21,6 +21,5 @@ object Builder {
     case BuildingFC() =>
       if (Actions.tryBuild(RobotType.FULFILLMENT_CENTER, Direction.SOUTHWEST)) Done()
       else BuildingFC()
-    case Done() => Done()
   }
 }

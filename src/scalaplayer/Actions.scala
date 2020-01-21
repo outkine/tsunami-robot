@@ -29,6 +29,11 @@ object Actions {
     true
   } else false
 
+  def tryDrop(dir: Direction): Boolean = if (rc.isReady && rc.canDropUnit(dir)) {
+    rc.dropUnit(dir)
+    true
+  } else false
+
   def tryBlockchain(message: Array[Int], cost: Int): Boolean = if (rc.canSubmitTransaction(message, cost)) {
     rc.submitTransaction(message, 10)
     true
@@ -37,5 +42,9 @@ object Actions {
   def findSoup(): Option[MapLocation] = {
     // Arrays and Sets break Battlecode
     rc.senseNearbySoup().to[List].sortBy(rc.getLocation.distanceSquaredTo).headOption
+  }
+
+  def senseRobotAtLocation(loc: MapLocation): Option[RobotInfo] = {
+    Option(rc.senseRobotAtLocation(loc))
   }
 }

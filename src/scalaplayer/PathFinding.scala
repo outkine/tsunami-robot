@@ -17,7 +17,8 @@ object PathFinding {
       val masterDir = origin.directionTo(target)
       val masterDest = origin.add(masterDir)
 
-      if (canMove(origin, masterDest, isDrone)) (masterDir, None)
+      // move onto target even if it is a wall
+      if (masterDest == target || canMove(origin, masterDest, isDrone)) (masterDir, None)
       else {
         prevWall match {
           case Some(wall) =>

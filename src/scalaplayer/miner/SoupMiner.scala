@@ -34,8 +34,8 @@ object SoupMiner {
       if (origin.add(dir) == target) {
         Working(stage, dir)
       } else {
-        Actions.tryMove(dir)
-        Moving(stage, origin, target, newPathState)
+        if (Actions.tryMove(dir)) Moving(stage, origin, target, newPathState)
+        else Moving(stage, prevOrigin, target, pathState)
       }
 
     case Working(stage, dir) => stage match {
